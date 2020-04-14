@@ -1,0 +1,19 @@
+{
+  "name": "Page Replacer",
+  "version": "1.0",
+  "description": "Replacing all content on the page",
+  "browser_action": {
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "activeTab"
+  ],
+  "content_scripts": [
+    {
+      "matches": [ "*://*/*" ],
+      "js": [ "replacer.js" ],
+      "run_at": "document_end"
+    }
+  ],
+  "manifest_version": 2
+}
