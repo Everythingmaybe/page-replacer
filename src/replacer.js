@@ -16,7 +16,7 @@ const styles = `
         opacity: 0 !important;
     }
     .${BLUR_CLASS} {
-        filter: blur(3em) !important;
+        filter: blur(0.3em) !important;
     }
     img.${BLUR_CLASS} {
         filter: blur(10px) !important;
@@ -25,14 +25,15 @@ const styles = `
 
 /**
  * Single instance of state
- * @type {{getState: (function(): {hideMode: boolean, editMode: boolean, blurMode: boolean}), setState: setState}}
+ * @type {{getState: (function(): {hideMode: boolean, editMode: boolean, blurMode: boolean}), setState: setState, setStateWithDefault: setStateWithDefault}}
  */
 const state = (function () {
-    let _state = {
+    const initState = {
         editMode: false,
         blurMode: false,
         hideMode: false,
     };
+    let _state = {...initState};
 
     const getState = () => ({..._state});
 
@@ -43,9 +44,17 @@ const state = (function () {
         }
     };
 
+    const setStateWithDefault = (newState) => {
+        _state = {
+            ...initState,
+            ...newState,
+        }
+    };
+
     return {
         getState,
         setState,
+        setStateWithDefault,
     };
 })();
 
@@ -67,19 +76,21 @@ function init() {
 function subscribeOnMessages() {
     chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
         switch (msg.type) {
+            case 'DISABLE_MODE': {
+                state.setStateWithDefault();
+                break;
+            }
             case 'TOGGLE_EDIT_MODE': {
-                state.setState({ editMode: msg.payload });
-                document.body.querySelectorAll('*').forEach((item) => {
-                    item.setAttribute('contenteditable', msg.payload);
-                });
+                state.setStateWithDefault({ editMode: msg.payload });
+                toggleEditMode(msg.payload);
                 break;
             }
             case 'TOGGLE_HIDE_MODE': {
-                state.setState({ hideMode: msg.payload });
+                state.setStateWithDefault({ hideMode: msg.payload });
                 break;
             }
             case 'TOGGLE_BLUR_MODE': {
-                state.setState({ blurMode: msg.payload });
+                state.setStateWithDefault({ blurMode: msg.payload });
                 break;
             }
             case 'GET_STATE': {
@@ -87,6 +98,14 @@ function subscribeOnMessages() {
                 break;
             }
         }
+        console.log(state.getState());
+        if (!state.getState().editMode) toggleEditMode(false);
+    });
+}
+
+function toggleEditMode(value) {
+    document.body.querySelectorAll('*').forEach((item) => {
+        item.setAttribute('contenteditable', value);
     });
 }
 

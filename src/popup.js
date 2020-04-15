@@ -5,9 +5,17 @@ document.addEventListener('DOMContentLoaded', function() {
          * Getting state
          */
         chrome.tabs.sendMessage(tab.id, {type: 'GET_STATE'}, (status) => {
-            editMode.checked = status.editMode;
-            hideMode.checked = status.hideMode;
-            blurMode.checked = status.blurMode;
+            if (!status.editMode && !status.hideMode && !status.blurMode) {
+                disableMode.checked = true;
+            } else {
+                editMode.checked = status.editMode;
+                hideMode.checked = status.hideMode;
+                blurMode.checked = status.blurMode;
+            }
+        });
+
+        disableMode.addEventListener('change', function() {
+            chrome.tabs.sendMessage(tab.id, {type: 'DISABLE_MODE'});
         });
 
         editMode.addEventListener('change', function(event) {

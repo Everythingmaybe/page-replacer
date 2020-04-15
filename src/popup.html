@@ -1,11 +1,109 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/regular.css" integrity="sha384-rbtXN6sVGIr49U/9DEVUaY55JgfUhjDiDo3EC0wYxfjknaJamv0+cF3XvyaovFbC" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/fontawesome.css" integrity="sha384-syoT0d9IcMjfxtHzbJUlNIuL19vD9XQAdOzftC+llPALVSZdxUpVXE0niLOiw/mn" crossorigin="anonymous">
+
         <script src="popup.js"></script>
+        <style>
+            body {
+                margin: 0;
+                font-family: 'Lexend Deca', sans-serif;
+                font-size: 14px;
+            }
+            h3 {
+                margin: 0 0 0.5em
+            }
+            .wrapper {
+                width: 10em;
+                background-color: #fff;
+                padding: 0.5em 1em 1em;
+                border: 1px solid #e6e6e6;
+            }
+            .radio-group-wrapper {
+                border-radius: 0.55em;
+                padding: 0.2em 0.5em 0.5em;
+            }
+
+            .radio-group {
+                position: relative;
+            }
+            .radio-group input {
+                display: none;
+            }
+            .radio-group label {
+                z-index: 1;
+                position: relative;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                cursor: pointer;
+                transition: color .15s;
+                padding: 0.25em 0.75em;
+                border-radius: 0.55em;
+            }
+
+            input:checked + label {
+                color: #fff;
+            }
+            .indicator {
+                z-index: 0;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 25%;
+                transition: top .3s;
+                background-color: #000;
+                border-radius: 0.55em;
+            }
+            #disableMode:checked ~ .indicator {
+                top: 0;
+            }
+            #editMode:checked ~ .indicator {
+                top: 25%;
+            }
+            #blurMode:checked ~ .indicator {
+                top: 50%;
+            }
+            #hideMode:checked ~ .indicator {
+                top: 75%;
+            }
+        </style>
     </head>
     <body>
-        <label for="editMode">Enabled edit mode <input id="editMode" type="checkbox"></label>
-        <label for="blurMode">Enabled blur mode <input id="blurMode" type="checkbox"></label>
-        <label for="hideMode">Enabled hide mode <input id="hideMode" type="checkbox"></label>
+        <div class="wrapper">
+            <h3>Page Replacer</h3>
+            <fieldset class="radio-group-wrapper">
+                <legend>MODE:</legend>
+                <div class="radio-group">
+                    <input id="disableMode" name="mode" type="radio">
+                    <label for="disableMode">
+                        <span>Off</span>
+                        <i class="far fa-eye"></i>
+                    </label>
+
+                    <input id="editMode" name="mode" type="radio">
+                    <label for="editMode">
+                        <span>Edit</span>
+                        <i class="far fa-edit"></i>
+                    </label>
+
+                    <input id="blurMode" name="mode" type="radio">
+                    <label for="blurMode">
+                        <span>Blur</span>
+                        <i class="far fa-eye" style="filter: blur(1px)"></i>
+                    </label>
+
+                    <input id="hideMode" name="mode" type="radio">
+                    <label for="hideMode">
+                        <span>Hide</span>
+                        <i class="far fa-eye-slash"></i>
+                    </label>
+                    <div class="indicator"></div>
+                </div>
+            </fieldset>
+        </div>
     </body>
 </html>
