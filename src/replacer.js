@@ -75,6 +75,7 @@ function init() {
  */
 function subscribeOnMessages() {
     chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
+        const prevState = state.getState();
         switch (msg.type) {
             case 'DISABLE_MODE': {
                 state.setStateWithDefault();
@@ -82,7 +83,6 @@ function subscribeOnMessages() {
             }
             case 'TOGGLE_EDIT_MODE': {
                 state.setStateWithDefault({ editMode: msg.payload });
-                toggleEditMode(msg.payload);
                 break;
             }
             case 'TOGGLE_HIDE_MODE': {
@@ -97,12 +97,37 @@ function subscribeOnMessages() {
                 sendResponse(state.getState());
                 break;
             }
+            case 'REMOVE_CHANGES': {
+                removeAllClasses(HIDDEN_CLASS, BLUR_CLASS);
+                break;
+            }
         }
-        console.log(state.getState());
-        if (!state.getState().editMode) toggleEditMode(false);
+
+        if (prevState.editMode !== state.getState().editMode) {
+            toggleEditMode(msg.payload);
+        }
     });
 }
 
+/**
+ * Remove classes from elements
+ * @param classes { string }
+ */
+function removeAllClasses(...classes) {
+    if (Array.isArray(classes) && classes.length) {
+        const querySelectorString = classes
+            .map((item) => `.${item}`)
+            .join(',');
+        document.body.querySelectorAll(querySelectorString).forEach((element) => {
+            element.classList.remove(...classes);
+        });
+    }
+}
+
+/**
+ * Toggle contenteditable attribute for all elements
+ * @param value { Boolean }
+ */
 function toggleEditMode(value) {
     document.body.querySelectorAll('*').forEach((item) => {
         item.setAttribute('contenteditable', value);
@@ -122,11 +147,17 @@ function subscribeOnEvents() {
         }
     });
 
-    document.body.addEventListener('mouseover', ({ target, relatedTarget }) => {
+    document.body.addEventListener('mouseover', ({ target }) => {
         const { blurMode, hideMode } = state.getState();
         if (blurMode || hideMode) {
-            relatedTarget && relatedTarget.classList.remove(HOVER_CLASS);
-            target && target.classList.add(HOVER_CLASS);
+            target.classList.add(HOVER_CLASS);
+        }
+    });
+
+    document.body.addEventListener('mouseout', ({ target }) => {
+        const { blurMode, hideMode } = state.getState();
+        if (blurMode || hideMode) {
+            target.classList.remove(HOVER_CLASS);
         }
     });
 }

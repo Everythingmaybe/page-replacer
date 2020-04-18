@@ -30,5 +30,8 @@ document.addEventListener('DOMContentLoaded', function() {
             chrome.tabs.sendMessage(tab.id, {type: 'TOGGLE_HIDE_MODE', payload: event.target.checked});
         });
 
+        removeChanges.addEventListener('click', function() {
+            chrome.tabs.sendMessage(tab.id, {type: 'REMOVE_CHANGES'});
+        });
     });
 }, false);

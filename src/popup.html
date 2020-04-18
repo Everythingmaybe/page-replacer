@@ -15,15 +15,47 @@
             h3 {
                 margin: 0 0 0.5em
             }
+            .btn {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                cursor: pointer;
+                transition: color .15s;
+                padding: 0.25em 0.75em;
+                border-radius: 0.55em;
+                font-family: 'Lexend Deca', sans-serif;
+                outline: none;
+            }
+            button.btn {
+                border-width: 2px;
+                border-style: groove;
+                border-color: threedface;
+                width: 100%;
+                font-size: 0.79em;
+                background-color: transparent;
+                transition-property: opacity, background-color;
+                transition-duration: .2s;
+            }
+            button.btn:hover {
+                background-color: buttonface;
+            }
+            button.btn:active {
+                transition-duration: .1s;
+                opacity: 0.5;
+            }
             .wrapper {
                 width: 10em;
                 background-color: #fff;
                 padding: 0.5em 1em 1em;
                 border: 1px solid #e6e6e6;
             }
+            .actions-wrapper {
+                margin-top: 0.5em;
+            }
             .radio-group-wrapper {
                 border-radius: 0.55em;
                 padding: 0.2em 0.5em 0.5em;
+                margin: 0;
             }
 
             .radio-group {
@@ -35,13 +67,6 @@
             .radio-group label {
                 z-index: 1;
                 position: relative;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                cursor: pointer;
-                transition: color .15s;
-                padding: 0.25em 0.75em;
-                border-radius: 0.55em;
             }
 
             input:checked + label {
@@ -79,31 +104,37 @@
                 <legend>MODE:</legend>
                 <div class="radio-group">
                     <input id="disableMode" name="mode" type="radio">
-                    <label for="disableMode">
+                    <label class="btn" for="disableMode">
                         <span>Off</span>
                         <i class="far fa-eye"></i>
                     </label>
 
                     <input id="editMode" name="mode" type="radio">
-                    <label for="editMode">
+                    <label class="btn" for="editMode">
                         <span>Edit</span>
                         <i class="far fa-edit"></i>
                     </label>
 
                     <input id="blurMode" name="mode" type="radio">
-                    <label for="blurMode">
+                    <label class="btn" for="blurMode">
                         <span>Blur</span>
                         <i class="far fa-eye" style="filter: blur(1px)"></i>
                     </label>
 
                     <input id="hideMode" name="mode" type="radio">
-                    <label for="hideMode">
+                    <label class="btn" for="hideMode">
                         <span>Hide</span>
                         <i class="far fa-eye-slash"></i>
                     </label>
                     <div class="indicator"></div>
                 </div>
             </fieldset>
+            <div class="actions-wrapper">
+                <button class="btn" id="removeChanges" type="button">
+                    <span>Remove blur/hiding</span>
+                    <i class="far fa-trash-alt"></i>
+                </button>
+            </div>
         </div>
     </body>
 </html>
