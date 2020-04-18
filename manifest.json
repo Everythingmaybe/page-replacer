@@ -2,8 +2,9 @@
   "name": "Page Replacer",
   "version": "1.0",
   "description": "Replacing all content on the page",
+  "author": "Nikolya Shirshov",
   "browser_action": {
-    "default_popup": "src/popup.html"
+    "default_popup": "popup.html"
   },
   "permissions": [
     "activeTab"
@@ -11,7 +12,7 @@
   "content_scripts": [
     {
       "matches": [ "*://*/*" ],
-      "js": [ "src/replacer.js" ],
+      "js": [ "replacer.js" ],
       "run_at": "document_end"
     }
   ],
