@@ -103,8 +103,9 @@ function subscribeOnMessages() {
             }
         }
 
-        if (prevState.editMode !== state.getState().editMode) {
-            toggleEditMode(msg.payload);
+        const currentState = state.getState();
+        if (prevState.editMode !== currentState.editMode) {
+            toggleEditMode(currentState.editMode);
         }
     });
 }
